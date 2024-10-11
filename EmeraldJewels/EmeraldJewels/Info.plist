@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+<key>NSSpeechRecognitionUsageDescription</key>
+<string>We need access to speech recognition for converting speech to text.</string>
+<key>NSMicrophoneUsageDescription</key>
+<string>We need to access your microphone to let the AI assistant hear and respond to your voice commands.</string>
+<key>NSCameraUsageDescription</key>
+<string>We need access to your camera to take a picture of your outfit for analysis.</string>
+<key>NSPhotoLibraryUsageDescription</key>
+<string>We need access to your photo library to select an image for outfit analysis.</string>
+</dict>
+</plist>
