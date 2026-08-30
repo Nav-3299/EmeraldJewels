@@ -39,6 +39,7 @@
 		8CD3E1DB2CB60C9D007AD82F /* OpenAiService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8CD3E1DA2CB60C9D007AD82F /* OpenAiService.swift */; };
 		8CDF8EF72CB6DBBF007C7700 /* EJHomeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8CDF8EF62CB6DBBF007C7700 /* EJHomeView.swift */; };
 		F00000000000000000000001 /* AppViewModels.swift in Sources */ = {isa = PBXBuildFile; fileRef = F00000000000000000000002 /* AppViewModels.swift */; };
+		F00000000000000000000003 /* LocalJewelleryRecommendationService.swift in Sources */ = {isa = PBXBuildFile; fileRef = F00000000000000000000004 /* LocalJewelleryRecommendationService.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -83,6 +84,7 @@
 		8CD3E1DA2CB60C9D007AD82F /* OpenAiService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OpenAiService.swift; sourceTree = "<group>"; };
 		8CDF8EF62CB6DBBF007C7700 /* EJHomeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EJHomeView.swift; sourceTree = "<group>"; };
 		F00000000000000000000002 /* AppViewModels.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppViewModels.swift; sourceTree = "<group>"; };
+		F00000000000000000000004 /* LocalJewelleryRecommendationService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocalJewelleryRecommendationService.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -168,6 +170,7 @@
 				8CD3E1DA2CB60C9D007AD82F /* OpenAiService.swift */,
 				8CD3E1CD2CB59117007AD82F /* SpeechAssistantManager.swift */,
 				8CC991672CB765DF00F4CFD2 /* ImagePickerManager.swift */,
+				F00000000000000000000004 /* LocalJewelleryRecommendationService.swift */,
 			);
 			path = EJManagers;
 			sourceTree = "<group>";
@@ -351,6 +354,7 @@
 				8C3808C92CB8647900DCA186 /* EJSignUp.swift in Sources */,
 				8C2736A02CB82D16006E4545 /* EJJewlleryViewModel.swift in Sources */,
 				F00000000000000000000001 /* AppViewModels.swift in Sources */,
+				F00000000000000000000003 /* LocalJewelleryRecommendationService.swift in Sources */,
 				8C3808B52CB84EDA00DCA186 /* EJDescriptionView.swift in Sources */,
 				8CC991682CB765DF00F4CFD2 /* ImagePickerManager.swift in Sources */,
 				8CD3E1D42CB59DDE007AD82F /* JewelleryClassifier.mlmodel in Sources */,

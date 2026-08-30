@@ -117,10 +117,16 @@ final class ChatViewModel: ObservableObject {
 
     let speechRecognizer: SpeechRecognizer
     private let recommendationService: any AIRecommendationServing
+    private let fallbackRecommendationService: (any JewelleryRecommendationFallbackProviding)?
 
-    init(speechRecognizer: SpeechRecognizer = SpeechRecognizer(), recommendationService: any AIRecommendationServing = OpenAIService()) {
+    init(
+        speechRecognizer: SpeechRecognizer = SpeechRecognizer(),
+        recommendationService: any AIRecommendationServing = OpenAIService(),
+        fallbackRecommendationService: (any JewelleryRecommendationFallbackProviding)? = LocalJewelleryRecommendationService()
+    ) {
         self.speechRecognizer = speechRecognizer
         self.recommendationService = recommendationService
+        self.fallbackRecommendationService = fallbackRecommendationService
         speechRecognizer.onTranscriptChanged = { [weak self] text in
             DispatchQueue.main.async { self?.messageText = text }
         }
@@ -157,6 +163,7 @@ final class ChatViewModel: ObservableObject {
             errorMessage = "Write or record a message before sending it."
             return
         }
+
         isSending = true
         errorMessage = nil
         recommendationService.sendMessage(trimmedMessage) { [weak self] result in
@@ -166,7 +173,13 @@ final class ChatViewModel: ObservableObject {
                 case .success(let response):
                     self?.responseText = response
                     self?.speechRecognizer.speak(response)
-                case .failure(let error): self?.errorMessage = error.localizedDescription
+                case .failure(let error):
+                    if let fallback = self?.fallbackRecommendationService?.recommendation(for: trimmedMessage) {
+                        self?.responseText = fallback
+                        self?.speechRecognizer.speak(fallback)
+                    } else {
+                        self?.errorMessage = error.localizedDescription
+                    }
                 }
             }
         }
@@ -182,4 +195,5 @@ final class ChatViewModel: ObservableObject {
         speechRecognizer.clear()
         speechRecognizer.stopSpeaking()
     }
+
 }
