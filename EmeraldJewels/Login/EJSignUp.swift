@@ -41,7 +41,11 @@ struct EJSignUp: View {
             .alert("Sign Up Failed", isPresented: errorAlert, actions: { Button("OK", role: .cancel) {} }, message: { Text(viewModel.errorMessage ?? "") })
         }
         .background(EJUtility.shared.getTheme())
-        .onChange(of: viewModel.isAuthenticated) { _, authenticated in if authenticated { isLoggedIn = true } }
+        .onChange(of: viewModel.isAuthenticated) { _, authenticated in
+            if authenticated {
+                isLoggedIn = true
+            }
+        }
     }
     private var errorAlert: Binding<Bool> { Binding(get: { viewModel.errorMessage != nil }, set: { if !$0 { viewModel.errorMessage = nil } }) }
 }

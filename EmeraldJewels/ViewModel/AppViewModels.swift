@@ -112,6 +112,8 @@ final class ChatViewModel: ObservableObject {
     @Published var outfitType: String?
     @Published var responseText = ""
     @Published var errorMessage: String?
+    @Published var messageText = ""
+    @Published private(set) var isSending = false
 
     let speechRecognizer: SpeechRecognizer
     private let recommendationService: any AIRecommendationServing
@@ -119,6 +121,12 @@ final class ChatViewModel: ObservableObject {
     init(speechRecognizer: SpeechRecognizer = SpeechRecognizer(), recommendationService: any AIRecommendationServing = OpenAIService()) {
         self.speechRecognizer = speechRecognizer
         self.recommendationService = recommendationService
+        speechRecognizer.onTranscriptChanged = { [weak self] text in
+            DispatchQueue.main.async { self?.messageText = text }
+        }
+        speechRecognizer.onRecordingFinished = { [weak self] text in
+            DispatchQueue.main.async { self?.sendMessage(text) }
+        }
     }
 
     func analyseSelectedImage() {
@@ -134,16 +142,30 @@ final class ChatViewModel: ObservableObject {
                     self.errorMessage = "We could not identify the outfit."
                     return
                 }
-                self.requestRecommendation(for: outfit)
+                self.sendMessage("I am wearing a \(outfit) outfit. Please recommend matching jewellery.")
             }
         }
     }
 
-    func requestRecommendation(for outfit: String) {
-        recommendationService.sendMessage("I am wearing a \(outfit) outfit. Please recommend matching jewellery.") { [weak self] result in
+    func sendTypedMessage() {
+        sendMessage(messageText)
+    }
+
+    func sendMessage(_ message: String) {
+        let trimmedMessage = message.trimmingCharacters(in: .whitespacesAndNewlines)
+        guard !trimmedMessage.isEmpty else {
+            errorMessage = "Write or record a message before sending it."
+            return
+        }
+        isSending = true
+        errorMessage = nil
+        recommendationService.sendMessage(trimmedMessage) { [weak self] result in
             DispatchQueue.main.async {
+                self?.isSending = false
                 switch result {
-                case .success(let response): self?.responseText = response
+                case .success(let response):
+                    self?.responseText = response
+                    self?.speechRecognizer.speak(response)
                 case .failure(let error): self?.errorMessage = error.localizedDescription
                 }
             }
@@ -154,6 +176,8 @@ final class ChatViewModel: ObservableObject {
         selectedImage = nil
         outfitType = nil
         responseText = ""
+        messageText = ""
+        isSending = false
         errorMessage = nil
         speechRecognizer.clear()
         speechRecognizer.stopSpeaking()

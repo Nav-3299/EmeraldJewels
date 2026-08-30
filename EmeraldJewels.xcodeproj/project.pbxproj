@@ -10,7 +10,6 @@
 		8C27369A2CB82BE4006E4545 /* EJJson.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8C2736992CB82BE4006E4545 /* EJJson.swift */; };
 		8C27369D2CB82CCF006E4545 /* EJJewelleryModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8C27369C2CB82CCF006E4545 /* EJJewelleryModel.swift */; };
 		8C2736A02CB82D16006E4545 /* EJJewlleryViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8C27369F2CB82D16006E4545 /* EJJewlleryViewModel.swift */; };
-		F00000000000000000000001 /* AppViewModels.swift in Sources */ = {isa = PBXBuildFile; fileRef = F00000000000000000000002 /* AppViewModels.swift */; };
 		8C3808B52CB84EDA00DCA186 /* EJDescriptionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8C3808B42CB84EDA00DCA186 /* EJDescriptionView.swift */; };
 		8C3808B72CB85A2000DCA186 /* EJUserDetailsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8C3808B62CB85A2000DCA186 /* EJUserDetailsView.swift */; };
 		8C3808B92CB85BD800DCA186 /* EJCodView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8C3808B82CB85BD800DCA186 /* EJCodView.swift */; };
@@ -39,6 +38,7 @@
 		8CD3E1D82CB5A053007AD82F /* AIAvatar.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8CD3E1D72CB5A053007AD82F /* AIAvatar.swift */; };
 		8CD3E1DB2CB60C9D007AD82F /* OpenAiService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8CD3E1DA2CB60C9D007AD82F /* OpenAiService.swift */; };
 		8CDF8EF72CB6DBBF007C7700 /* EJHomeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8CDF8EF62CB6DBBF007C7700 /* EJHomeView.swift */; };
+		F00000000000000000000001 /* AppViewModels.swift in Sources */ = {isa = PBXBuildFile; fileRef = F00000000000000000000002 /* AppViewModels.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -58,7 +58,6 @@
 		8C2736992CB82BE4006E4545 /* EJJson.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EJJson.swift; sourceTree = "<group>"; };
 		8C27369C2CB82CCF006E4545 /* EJJewelleryModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EJJewelleryModel.swift; sourceTree = "<group>"; };
 		8C27369F2CB82D16006E4545 /* EJJewlleryViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EJJewlleryViewModel.swift; sourceTree = "<group>"; };
-		F00000000000000000000002 /* AppViewModels.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppViewModels.swift; sourceTree = "<group>"; };
 		8C3808B42CB84EDA00DCA186 /* EJDescriptionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EJDescriptionView.swift; sourceTree = "<group>"; };
 		8C3808B62CB85A2000DCA186 /* EJUserDetailsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EJUserDetailsView.swift; sourceTree = "<group>"; };
 		8C3808B82CB85BD800DCA186 /* EJCodView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EJCodView.swift; sourceTree = "<group>"; };
@@ -83,6 +82,7 @@
 		8CD3E1D92CB6033E007AD82F /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
 		8CD3E1DA2CB60C9D007AD82F /* OpenAiService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OpenAiService.swift; sourceTree = "<group>"; };
 		8CDF8EF62CB6DBBF007C7700 /* EJHomeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EJHomeView.swift; sourceTree = "<group>"; };
+		F00000000000000000000002 /* AppViewModels.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppViewModels.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -503,6 +503,7 @@
 					"@executable_path/Frameworks",
 				);
 				MARKETING_VERSION = 1.0;
+				OPENAI_API_KEY = "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";
 				PRODUCT_BUNDLE_IDENTIFIER = com.navpreet.kaur.EmeraldJewels;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
@@ -536,6 +537,7 @@
 					"@executable_path/Frameworks",
 				);
 				MARKETING_VERSION = 1.0;
+				OPENAI_API_KEY = "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";
 				PRODUCT_BUNDLE_IDENTIFIER = com.navpreet.kaur.EmeraldJewels;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";

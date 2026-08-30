@@ -18,7 +18,8 @@ class SpeechRecognizer: NSObject, SFSpeechRecognizerDelegate, ObservableObject {
     private let audioSession = AVAudioSession.sharedInstance() // Keep audioSession as a class variable
 
     @Published var transcribedText = ""
-    @Published var openAIResponseText: String = ""
+    var onTranscriptChanged: ((String) -> Void)?
+    var onRecordingFinished: ((String) -> Void)?
     
     func startRecording() {
         guard let recognizer = speechRecognizer, recognizer.isAvailable else {
@@ -31,6 +32,7 @@ class SpeechRecognizer: NSObject, SFSpeechRecognizerDelegate, ObservableObject {
             stopRecording()
         }
         transcribedText = ""
+        onTranscriptChanged?("")
         recognitionRequest = SFSpeechAudioBufferRecognitionRequest()
         recognitionRequest?.shouldReportPartialResults = true
         voiceAssistant.configureAudioSessionForRecording()
@@ -65,7 +67,11 @@ class SpeechRecognizer: NSObject, SFSpeechRecognizerDelegate, ObservableObject {
         // Perform speech recognition
         recognitionTask = recognizer.recognitionTask(with: recognitionRequest!) { result, error in
             if let result = result {
-                self.transcribedText = result.bestTranscription.formattedString
+                let transcription = result.bestTranscription.formattedString
+                DispatchQueue.main.async {
+                    self.transcribedText = transcription
+                    self.onTranscriptChanged?(transcription)
+                }
             }
             if let error = error {
                 print("Speech recognition error: \(error.localizedDescription)")
@@ -88,25 +94,13 @@ class SpeechRecognizer: NSObject, SFSpeechRecognizerDelegate, ObservableObject {
             print("Failed to deactivate audio session: \(error)")
         }
 
-        // After stopping the recording, send the text to OpenAI
+        // The view model decides what to do with a completed transcription.
         if !transcribedText.isEmpty {
-            sendTextToOpenAI(message: transcribedText)
+            onRecordingFinished?(transcribedText)
         }
     }
-    
-    func sendTextToOpenAI(message: String) {
-        OpenAIService().sendMessage(message) { [weak self] result in
-            DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
-                switch result {
-                case .success(let response):
-                    self?.openAIResponseText = response
-                    self?.voiceAssistant.speak(text: response)
-                case .failure(let error):
-                    self?.openAIResponseText = error.localizedDescription
-                }
-            }
-        }
-    }
+
+    func speak(_ text: String) { voiceAssistant.speak(text: text) }
     
     func stopSpeaking(){
         self.voiceAssistant.stopSpeaking()
@@ -114,6 +108,6 @@ class SpeechRecognizer: NSObject, SFSpeechRecognizerDelegate, ObservableObject {
 
     func clear() {
         transcribedText = ""
-        openAIResponseText = ""
+        onTranscriptChanged?("")
     }
 }

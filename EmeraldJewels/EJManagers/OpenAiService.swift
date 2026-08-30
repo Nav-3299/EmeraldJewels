@@ -16,13 +16,22 @@ protocol AIRecommendationServing {
 enum AIServiceError: LocalizedError {
     case missingAPIKey
     case invalidResponse
+    case api(statusCode: Int, message: String, requestID: String?)
 
     var errorDescription: String? {
         switch self {
-        case .missingAPIKey: "AI service is not configured. Add OPENAI_API_KEY to the app configuration."
-        case .invalidResponse: "The AI service returned an invalid response."
+        case .missingAPIKey: return "AI service is not configured. Add OPENAI_API_KEY to the app configuration."
+        case .invalidResponse: return "The AI service returned an invalid response."
+        case let .api(statusCode, message, requestID):
+            let requestReference = requestID.map { " (Request ID: \($0))" } ?? ""
+            return "OpenAI error \(statusCode): \(message)\(requestReference)"
         }
     }
+}
+
+private struct OpenAIErrorPayload: Decodable {
+    struct APIError: Decodable { let message: String }
+    let error: APIError
 }
 
 final class OpenAIService: AIRecommendationServing {
@@ -53,7 +62,7 @@ final class OpenAIService: AIRecommendationServing {
         // Prepare the body of the request
 
         let parameters: [String: Any] = [
-            "model": "gpt-4o",  // OpenAI model
+            "model": "gpt-4o",
             "messages": [
                 ["role": "system", "content": "You are an AI assistant that recommends matching jewellery according to the outfit worn . You should also identify if the person is male or female and then recommend jewellery. If you cannot identify then recommend jewellery for both male and female separately . You name is Pixi"], // System prompt
                 ["role": "user", "content": message]  // User message
@@ -81,6 +90,17 @@ final class OpenAIService: AIRecommendationServing {
                 completion(.failure(AIServiceError.invalidResponse))
                 return
             }
+
+            let requestID = (response as? HTTPURLResponse)?.value(forHTTPHeaderField: "x-request-id")
+            let statusCode = (response as? HTTPURLResponse)?.statusCode ?? 0
+
+            guard (200...299).contains(statusCode) else {
+                let message = (try? JSONDecoder().decode(OpenAIErrorPayload.self, from: data).error.message)
+                    ?? String(data: data, encoding: .utf8)
+                    ?? "The request failed."
+                completion(.failure(AIServiceError.api(statusCode: statusCode, message: message, requestID: requestID)))
+                return
+            }
             
             // Parse the response
             do {
@@ -91,7 +111,7 @@ final class OpenAIService: AIRecommendationServing {
                     completion(.success(content))
                     
                 } else {
-                    completion(.failure(AIServiceError.invalidResponse))
+                    completion(.failure(AIServiceError.api(statusCode: statusCode, message: "The response did not contain generated text.", requestID: requestID)))
                 }
             } catch {
                 print("Error decoding JSON: \(error.localizedDescription)")
@@ -103,4 +123,3 @@ final class OpenAIService: AIRecommendationServing {
         
     }
 }
-
